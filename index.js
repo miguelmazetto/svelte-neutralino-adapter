@@ -1,8 +1,7 @@
 import { onMount } from 'svelte';
-import '@neutralinojs/lib/dist/neutralino.d.ts'
 
 /**
- * @type {typeof globalThis.Neutralino | undefined}
+ * @type {import("@neutralinojs/lib/dist/neutralino").Neutralino | undefined}
  */
 var _Neutralino;
 export default _Neutralino;
