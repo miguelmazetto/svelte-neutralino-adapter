@@ -1,0 +1,36 @@
+{
+   "applicationId": "dev.svelte.kit",
+   "defaultMode": "window",
+   "port": 8001,
+   "url": "/",
+   "output": "build",
+   "enableServer": true,
+   "enableNativeAPI": true,
+   "logging": {
+      "enabled": true,
+      "writeToLogFile": true
+   },
+   "nativeBlockList": [ ],
+   "modes": {
+      "window": {
+         "title": "SvelteKit",
+         "width": 800,
+         "height": 500,
+         "minWidth": 400,
+         "minHeight": 200,
+         "fullScreen": false,
+         "alwaysOnTop": false,
+         "icon": "/favicon.png",
+         "enableInspector": false,
+         "borderless": false,
+         "maximize": false,
+         "hidden": false,
+         "resizable": true,
+         "exitProcessOnClose": true,
+         "useSavedState": true
+      }
+   },
+   "cli": {
+      "binaryName": "sveltekit"
+   }
+}
