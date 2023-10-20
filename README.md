@@ -7,7 +7,6 @@ The advantage of Neutralino compared to Electron, is that the browser is not inc
 
 ```
 npm install --save-dev @miguelmazetto/svelte-neutralino-adapter
-```
 
 ## Usage
 
