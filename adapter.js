@@ -47,8 +47,14 @@ function mergeObject(obj, overrideobj){
     }
 }
 
+ /**
+ * @typedef {object} NeutralinoOptions
+ * @extends {import("@sveltejs/adapter-static").AdapterOptions}
+ * @property {Record<string, any>} [neutralino]
+ */
+
 /**
- * @param {any} options
+ * @param {NeutralinoOptions} options
  */
 export default function (options) {
     return {
@@ -60,6 +66,7 @@ export default function (options) {
          */
         // @ts-ignore
         async adapt(builder) {
+            
             const rootdir = process.cwd()
             const rootconfig = join(rootdir, 'neutralino.config.json')
 
@@ -70,6 +77,10 @@ export default function (options) {
                 mergeObject(config, JSON.parse(readFileSync(rootconfig, 'utf-8')))
             else
                 writeFileSync(rootconfig, JSON.stringify(config, null, 2))
+
+            if(options.neutralino)
+                mergeObject(config, options.neutralino)
+
             mergeObject(config, hiddenConfig)
 
             console.log(
@@ -134,10 +145,11 @@ export default function (options) {
 
             // Prepare 'pages' path
             console.log(chalk.bgYellow(" Building ") + " Generating static build")
-            // @ts-ignore
-            const adapter = new staticAdapter({ pages: join(outdir, "pages") })
+
+            const adapter = new staticAdapter(
+                mergeObject(mergeObject({strict: false}, options), { pages: join(outdir, "pages") }))
             await adapter.adapt(builder)
-            
+
             // Prepare 'bin' path
             rmSync(join(outdir, 'bin'), { recursive: true, force: true })
             symlinkSync(join(binPath, 'bin'), join(outdir, 'bin'), 'junction')
@@ -147,17 +159,6 @@ export default function (options) {
             builder.copy(
                 require.resolve('@neutralinojs/lib/dist/neutralino.js'),
                 join(outdir, 'pages/neutralino.js'))
-
-            if(config.enableNativeAPI){
-                
-                // Init neutralino in index.html
-                let index = readFileSync(join(outdir, 'pages/index.html'), 'utf-8')
-                index = index.replace('</head>',
-                    '\t<script src="/neutralino.js"></script>\n\t\t'+
-                    '<script>window.Neutralino.init();</script>\n\t'+
-                    '</head>')
-                writeFileSync(join(outdir, 'pages/index.html'), index)
-            }
 
             // Run bundler
             console.log(chalk.bgYellow(" Building ") + " Generating Neutralinojs release")
@@ -169,7 +170,8 @@ export default function (options) {
             rmSync(join(outdir, 'bin'), { recursive: true, force: true })
 
             console.log(
-                chalk.bgGreen(" Success ") + " Application is available in " + chalk.cyan(outdir)
+                chalk.bgGreen(" Success ") + " Application is available in " +
+                    chalk.cyan(join(outdir, 'dist/'+config.cli.binaryName))
             )
         }
     }

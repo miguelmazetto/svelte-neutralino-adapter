@@ -5,7 +5,7 @@
    "url": "/",
    "output": "build",
    "enableServer": true,
-   "enableNativeAPI": true,
+   "enableNativeAPI": false,
    "logging": {
       "enabled": true,
       "writeToLogFile": true
@@ -16,6 +16,7 @@
          "title": "SvelteKit",
          "width": 800,
          "height": 500,
+         "center": true,
          "minWidth": 400,
          "minHeight": 200,
          "fullScreen": false,
@@ -27,7 +28,7 @@
          "hidden": false,
          "resizable": true,
          "exitProcessOnClose": true,
-         "useSavedState": true
+         "useSavedState": false
       }
    },
    "cli": {
