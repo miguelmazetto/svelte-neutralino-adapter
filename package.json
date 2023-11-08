@@ -1,6 +1,6 @@
 {
   "name": "@miguelmazetto/svelte-neutralino-adapter",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Svelte Adapter for Neutralino (Desktop)",
   "main": "index.js",
   "scripts": {

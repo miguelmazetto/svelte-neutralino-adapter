@@ -16,12 +16,24 @@ export function onNeutralino(/** @type {() => void} */ cb) {
         cbs.push(cb);
 }
 
+let neut_loading = false;
+
  /**
   * @param {{ logErrors: boolean }} [options]
   */
 export function initNeutralino(options)
 {
+    neut_loading = true;
     onMount(() => {
+        
+        // Avoid duplicate instances
+        if(window.Neutralino){
+            neut_loaded = true;
+            neut_loading = false;
+            cbs.forEach(cb => cb());
+            cbs = [];
+            return;
+        }
 
         // Add neutralino.js to all files that requires it
         var s = document.createElement('script');
@@ -37,9 +49,11 @@ export function initNeutralino(options)
             }
 
             neut_loaded = true;
-            cbs.forEach(cb => cb())
+            neut_loading = false;
+            cbs.forEach(cb => cb());
+            cbs = [];
         }
-        document.body.appendChild(s);
+        document.head.appendChild(s);
 
     })
 }

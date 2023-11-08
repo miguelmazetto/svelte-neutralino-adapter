@@ -45,6 +45,7 @@ function mergeObject(obj, overrideobj){
         }else
             obj[key] = e;
     }
+    return obj
 }
 
  /**
@@ -57,6 +58,8 @@ function mergeObject(obj, overrideobj){
  * @param {NeutralinoOptions} options
  */
 export default function (options) {
+    options = options ?? {};
+    
     return {
         name: "@miguelmazetto/svelte-neutralino-adapter",
 
