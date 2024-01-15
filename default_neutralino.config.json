@@ -1,7 +1,7 @@
 {
    "applicationId": "dev.svelte.kit",
    "defaultMode": "window",
-   "port": 8001,
+   "port": 0,
    "url": "/",
    "output": "build",
    "enableServer": true,

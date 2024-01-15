@@ -20,7 +20,7 @@ export default {
 }
 ```
 ```javascript
-// routes/+layout.js or routes/+layout.js
+// routes/+layout.ts or routes/+layout.js
 export const prerender = true;
 ```
 
@@ -43,20 +43,24 @@ Enable it at:
 ```
 Initialize it at:
 ```html
+<!-- routes/+layout.svelte -->
 <script>
 	import { initNeutralino, onNeutralino } from "@miguelmazetto/svelte-neutralino-adapter";
 	
 	// Calls the initialization of the Native API socket
-	initNeutralino();
+	// It is recommended to be in the root +layout.svelte
+	initNeutralino(n => {
+		// Execute first
+		n.debug.log("First!", n.debug.LoggerType.INFO)
+	})
 	
 	// Adds a callback for when the NativeAPI is ready.
 	// If called after it is already ready, it will just
 	// immediately call it. In doubt, just use it.
-	onNeutralino(()=>{
-		// Here you can use native api functions
-		
-		Neutralino.debug.log("SvelteKit :D",
-			Neutralino.debug.LoggerType.INFO)
+	// This can be placed anywhere
+	onNeutralino(n => {
+		// Execute second
+		n.debug.log("Second!", n.debug.LoggerType.INFO)
 	})
 </script>
 ```
