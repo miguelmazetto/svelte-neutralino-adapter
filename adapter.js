@@ -1,5 +1,5 @@
 import staticAdapter from "@sveltejs/adapter-static"
-import { join, relative, resolve } from "path"
+import { join, relative, resolve, isAbsolute } from "path"
 import { writeFileSync, existsSync, readFileSync, symlinkSync, rmSync } from "fs"
 import chalk from "chalk"
 
@@ -52,6 +52,7 @@ function mergeObject(obj, overrideobj){
  * @typedef {object} NeutralinoOptions
  * @extends {import("@sveltejs/adapter-static").AdapterOptions}
  * @property {Record<string, any>} [neutralino]
+ * @property {string[]} [neutralino_dist_copy]
  */
 
 /**
@@ -172,9 +173,23 @@ export default function (options) {
             // Remove 'bin' symlink to avoid confusion
             rmSync(join(outdir, 'bin'), { recursive: true, force: true })
 
+            // Add additional files to dist folder
+            const distdir = join(outdir, 'dist/'+config.cli.binaryName)
+
+            if(options.neutralino_dist_copy){
+                options.neutralino_dist_copy.forEach(s => {
+                    const ns = s.replaceAll('\\','/')
+                    const fn = ns.substring(ns.lastIndexOf('/', 1))
+                    if(isAbsolute(s))
+                        builder.copy(s, distdir+'/'+fn)
+                    else
+                        builder.copy(relative(rootdir, s), distdir+'/'+fn)
+                })
+            }
+
             console.log(
                 chalk.bgGreen(" Success ") + " Application is available in " +
-                    chalk.cyan(join(outdir, 'dist/'+config.cli.binaryName))
+                    chalk.cyan(distdir)
             )
         }
     }
