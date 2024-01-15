@@ -1,7 +1,7 @@
 
 import { onMount } from 'svelte';
 import * as Neutralino from '@neutralinojs/lib'
-import { building } from '$app/environment';
+//import { building } from '$app/environment';
 
 /**
  * @typedef {typeof import('@neutralinojs/lib')} NeutType
@@ -26,7 +26,7 @@ export function onNeutralino(/** @type {(n: NeutType) => void} */ cb) {
   */
 export function initNeutralino(cb, options)
 {
-    if(building) return
+    //if(building) return
 
     if(neut_loaded) return cb && cb(Neutralino)
     if(neut_loading) return cb && onNeutralino(cb)
